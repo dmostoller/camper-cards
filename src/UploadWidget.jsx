@@ -24,7 +24,7 @@ function UploadWidget({onSetImageUrl}) {
 
 return (
     <>
-    <button type="button" className="ui circular icon red massive button " onClick={() => widgetRef.current.open()}>
+    <button type="button" className="ui circular icon blue massive button " onClick={() => widgetRef.current.open()}>
         <i className='camera icon'></i>
     </button>
     </>
