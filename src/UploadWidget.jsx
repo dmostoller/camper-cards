@@ -14,17 +14,17 @@ function UploadWidget({onSetImageUrl}) {
             // sources: [ "local", "url"], // restrict the upload sources to URL and local files
         }, function(error, result) { 
             if (error) {
-                console.log(error)
+                // console.log(error)
             }
             if (!error && result && result.event === "success") {
-                console.log(result.info);
+                // console.log(result.info);
                 onSetImageUrl(result.info.secure_url);
     }});
     }, [onSetImageUrl])
 
 return (
     <>
-    <button type="button" className="ui circular icon blue massive button " onClick={() => widgetRef.current.open()}>
+    <button type="button" className="ui circular icon red massive button " onClick={() => widgetRef.current.open()}>
         <i className='camera icon'></i>
     </button>
     </>
