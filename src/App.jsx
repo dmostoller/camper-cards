@@ -61,11 +61,11 @@ function App() {
             </div>
         } 
         {imageUrl && 
-            <div className="ui grid" style={{minHeight:"100vh", marginTop: "230px"}}>
+            <div className="ui center aligned grid" style={{minHeight:"100vh", marginTop: "230px"}}>
+                <div className='ui segment'>
                 <button onClick={toggleView} className='ui huge circular blue button'>
                     Upload Another Photo
                 </button>
-                <div className='ui segment'>
                 <img className="ui centered image large" src={imageUrl} alt=""></img>
                     <CamperForm imageUrl={imageUrl} setImageUrl={setImageUrl}/>
                 </div>
