@@ -61,7 +61,7 @@ function App() {
             </div>
         } 
         {imageUrl && 
-            <div className="ui center aligned grid" style={{minHeight:"100vh", marginTop: "230px"}}>
+            <div className="ui grid" style={{minHeight:"100vh", marginTop: "230px"}}>
                 <button onClick={toggleView} className='ui huge circular blue button'>
                     Upload Another Photo
                 </button>
