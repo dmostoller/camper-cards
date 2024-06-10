@@ -11,11 +11,33 @@ import option3 from './assets/card-test-frame-g.png'
 function App() {
     const [error, setError] = useState(null);
     const [imageUrl, setImageUrl] = useState();
-    const [selectedOption, setSelectedOption] = useState("");
+    const [optionOne, setOptionOne] = useState(false);
+    const [optionTwo, setOptionTwo] = useState(false);
+    const [optionThree, setOptionThree] = useState(false);
+
 
     function toggleView() {
         setImageUrl(null)
     }
+
+function selectOptionOne() {
+    setOptionOne((prevValue) => !prevValue)
+    setOptionTwo((prevValue) => false)
+    setOptionThree((prevValue) => false)
+
+}
+function selectOptionTwo() {
+    setOptionTwo((prevValue) => !prevValue)
+    setOptionOne((prevValue) => false)
+    setOptionThree((prevValue) => false)
+
+}
+function selectOptionThree() {
+    setOptionThree((prevValue) => !prevValue)
+    setOptionOne((prevValue) => false)
+    setOptionTwo((prevValue) => false)
+
+}
 
   return (
     <>
@@ -24,19 +46,27 @@ function App() {
             <div className="ui middle aligned center aligned grid" style={{minHeight:"100vh"}}>
                 <div className="column">
                     <div className="ui three cards">
-                            <a
-                            className='ui card'
-                            >
-                                <div className='image'>
-                                    <img src={option1} alt='option 1'></img>
-                                </div>
-                                <div className='content'>
-                                    <div className='header'>Option 1</div>
-                                </div>
-                            </a>
-                        <a
-                        className='ui card'
-                        >
+                    { optionOne ?
+                        <a className='ui red card' onClick={selectOptionOne}>
+                            <div className='image'>
+                                <img src={option1} alt='option 1'></img>
+                            </div>
+                            <div className='content'>
+                                <div className='header'>Option 1</div>
+                            </div>
+                        </a>
+                    :
+                        <a className='ui card' onClick={selectOptionOne}>
+                            <div className='image'>
+                                <img src={option1} alt='option 1'></img>
+                            </div>
+                            <div className='content'>
+                                <div className='header'>Option 1</div>
+                            </div>
+                        </a>
+                    }
+                    { optionTwo ?
+                        <a className='ui red card' onClick={selectOptionTwo}>
                             <div className='image'>
                                 <img src={option2} alt='option 2'></img>
                             </div>
@@ -44,16 +74,36 @@ function App() {
                                 <div className='header'>Option 2</div>
                             </div>
                         </a>
-                        <a
-                        className='ui card'
-                        >
+                        :
+                        <a className='ui card' onClick={selectOptionTwo}>
+                            <div className='image'>
+                                <img src={option2} alt='option 2'></img>
+                            </div>
+                            <div className='content'>
+                                <div className='header'>Option 2</div>
+                            </div>
+                        </a>
+                        } 
+                        { optionThree ?
+                        <a className='ui red card' onClick={selectOptionThree}>
                             <div className='image'>
                                 <img src={option3} alt='option 3'></img>
                             </div>
                             <div className='content'>
                                 <div className='header'>Option 3</div>
                             </div>
-                        </a>                    
+                        </a>
+                        :
+                        <a className='ui card' onClick={selectOptionThree}>
+                            <div className='image'>
+                                <img src={option3} alt='option 3'></img>
+                            </div>
+                            <div className='content'>
+                                <div className='header'>Option 3</div>
+                            </div>
+                        </a>
+                        } 
+
                     </div>
                     <h2>Upload Camper Photo</h2>
                     <UploadWidget onSetImageUrl={setImageUrl}/>
