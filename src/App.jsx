@@ -5,7 +5,8 @@ import CamperForm from './CamperForm';
 import option1 from './assets/card-test-frame.png'
 import option2 from './assets/card-test-frame-b.png'
 import option3 from './assets/card-test-frame-g.png'
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -41,6 +42,7 @@ function selectOptionThree() {
 
   return (
     <>
+    <ToastContainer/>
     <div className='ui container'>
         { !imageUrl &&
             <div className="ui middle aligned center aligned grid" style={{minHeight:"100vh"}}>

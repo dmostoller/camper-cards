@@ -1,11 +1,14 @@
 import React, {useState} from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 function CamperForm ({imageUrl, setImageUrl}) {
     const [error, setError] = useState(null);
-
+    // console.log(imageUrl)
     const formSchema = yup.object().shape({
         first_name: yup.string()
             .required("First name is required")
@@ -16,7 +19,8 @@ function CamperForm ({imageUrl, setImageUrl}) {
         nickname: yup.string()
             .required("Desired name is required"),
         age: yup.string()
-            .required("Age is required")
+            .required("Age is required"),
+        image_url: yup.string().required("Must add an image link"),
       })
 
     const formik = useFormik({
@@ -30,7 +34,7 @@ function CamperForm ({imageUrl, setImageUrl}) {
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
-          fetch("/campers", {
+          fetch("http://127.0.0.1:5555/campers", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -39,7 +43,8 @@ function CamperForm ({imageUrl, setImageUrl}) {
           }).then((res) => {
             if(res.ok) {
               res.json().then(camper => {
-                setImageUrl(null)
+                setImageUrl(null);
+                toast("Your Camper Card Has Been Submitted!");
             })
             } else {
                 res.json().then(error => setError(error.message))
@@ -93,6 +98,7 @@ function CamperForm ({imageUrl, setImageUrl}) {
                 </div>
                 <div className="field">
                     <button className="ui circular fluid button large green" type="submit">Submit</button>
+                    <input type="text" style={{visibility: "hidden"}} name="image_url" value={formik.values.image_url} placeholder="Image link..." onChange={formik.handleChange}></input>               
                 </div>
             </form> 
         </div>
