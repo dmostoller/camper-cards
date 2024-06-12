@@ -44,6 +44,7 @@ function selectOptionThree() {
     <>
     <ToastContainer/>
     <div className='ui container'>
+        Welcome to Camp ....!
         { !imageUrl &&
             <div className="ui middle aligned center aligned grid" style={{minHeight:"100vh"}}>
                 <div className="column">
