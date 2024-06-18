@@ -3,52 +3,58 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Cloudinary } from '@cloudinary/url-gen';
+import { thumbnail } from '@cloudinary/url-gen/actions/resize';
+import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
+import { format, quality } from '@cloudinary/url-gen/actions/delivery';
+import { AdvancedImage, placeholder } from '@cloudinary/react';
+import { scale } from "@cloudinary/url-gen/actions/resize";
+import { source } from "@cloudinary/url-gen/actions/overlay";
+import { set } from "@cloudinary/url-gen/actions/variable";
+import { image, text } from "@cloudinary/url-gen/qualifiers/source";
+import { Position } from "@cloudinary/url-gen/qualifiers/position";
+import { compass } from "@cloudinary/url-gen/qualifiers/gravity";
 
-
-function CamperForm ({imageUrl, setImageUrl}) {
+function CamperTransForm ({imageUrl, setImageUrl}) {
     const [error, setError] = useState(null);
     // console.log(imageUrl)
+
+
+    const cld = new Cloudinary({
+        cloud: {
+          cloudName: 'ddp2xfpyb',
+        },
+      });
+
+    const myImage = cld.image(imageUrl);
+
     const formSchema = yup.object().shape({
-        first_name: yup.string()
-            .required("First name is required")
-            .min(2, 'First name must be more than two characters'),
-        last_name: yup.string()
-            .required("Last name is required")
-            .min(2, 'Last name must be more than two characters'),
-        nickname: yup.string()
-            .required("Desired name is required"),
+        name: yup.string()
+            .required("Camper's name is required"),
         age: yup.string()
             .required("Age is required"),
-        image_url: yup.string().required("Must add an image link"),
       })
 
     const formik = useFormik({
       enableReinitialize: true, 
         initialValues: {
-          first_name:'',
-          last_name:'',
-          nickname:'',
+          name:'',
           age: '',
-          image_url:`${imageUrl}`,
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
-          fetch("http://127.0.0.1:5555/campers", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values),
-          }).then((res) => {
-            if(res.ok) {
-              res.json().then(camper => {
-                setImageUrl(null);
-                toast("Your Camper Card Has Been Submitted!");
-            })
-            } else {
-                res.json().then(error => setError(error.message))
-            }
-          })
+        myImage.addVariable(set("name", values.name))
+        .addVariable(set("color", "rgb:FFFFFF"))
+        .addVariable(set("style", "Arial_120"))
+        .overlay(
+          source(text("  $(name)", "$style").textColor("$color")).position(
+            new Position()
+              .gravity(compass("south_west"))
+              .offsetX(120)
+              .offsetY(130)
+          )
+        );
+        // setImageUrl("")
         },
       })
 
@@ -56,26 +62,22 @@ function CamperForm ({imageUrl, setImageUrl}) {
     return (
         <>
          {error && <h2 style={{color:'red', textAlign:'center'}}> {error} </h2>}
+         <div className="ui container">
+         <AdvancedImage
+            cldImg={myImage}
+            style={{ maxWidth: '500px' }}
+            plugins={[placeholder()]}
+            className="rounded-lg shadow-lg"
+         />
+         </div>
         <div className="ui text container">
             <form className="ui form initial" onSubmit={formik.handleSubmit}>
             <h4 style={{marginTop: "20px"}} className="ui horizontal divider">Camper Details</h4>
                 <div className="equal width fields">
                     <div className="field">
-                        <label>First Name</label>
-                        <input type="text" name="first_name" value={formik.values.first_name} placeholder="First name..." onChange={formik.handleChange}></input>
-                        {formik.errors && <p style={{color:'red', textAlign:'center'}}>{formik.errors.first_name}</p>}
-                    </div>
-                    <div className="field">
-                        <label>Last Name</label>
-                        <input type="text" name="last_name" value={formik.values.last_name} placeholder="Last name..." onChange={formik.handleChange}></input>
-                        {formik.errors && <p style={{color:'red', textAlign:'center'}}>{formik.errors.last_name}</p>}
-                    </div>
-                </div>
-                <div className="equal width fields">
-                    <div className="field">
-                        <label>Desired Name / Nickname</label>
-                        <input type="text" name="nickname" value={formik.values.nickname} placeholder="Desired Name..." onChange={formik.handleChange}></input>
-                        {formik.errors && <p style={{color:'red', textAlign:'center'}}>{formik.errors.nickname}</p>}
+                        <label>Name</label>
+                        <input type="text" name="name" value={formik.values.name} placeholder="Name..." onChange={formik.handleChange}></input>
+                        {formik.errors && <p style={{color:'red', textAlign:'center'}}>{formik.errors.name}</p>}
                     </div>
                     <div className="field">
                         <label>Age</label>
@@ -105,4 +107,4 @@ function CamperForm ({imageUrl, setImageUrl}) {
     )
 }
 
-export default CamperForm
+export default CamperTransForm

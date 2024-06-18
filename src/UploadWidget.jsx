@@ -18,7 +18,7 @@ function UploadWidget({onSetImageUrl}) {
             }
             if (!error && result && result.event === "success") {
                 // console.log(result.info);
-                onSetImageUrl(result.info.secure_url);
+                onSetImageUrl(result.info.public_id);
     }});
     }, [onSetImageUrl])
 
