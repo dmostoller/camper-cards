@@ -18,14 +18,12 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 
-
 function App() {
     const [error, setError] = useState(null);
     const [imageUrl, setImageUrl] = useState();
     const [optionOne, setOptionOne] = useState(false);
     const [optionTwo, setOptionTwo] = useState(false);
     const [optionThree, setOptionThree] = useState(false);
-
 
     function toggleView() {
         setImageUrl(null)
@@ -35,19 +33,18 @@ function selectOptionOne() {
     setOptionOne((prevValue) => !prevValue)
     setOptionTwo((prevValue) => false)
     setOptionThree((prevValue) => false)
-
 }
+
 function selectOptionTwo() {
     setOptionTwo((prevValue) => !prevValue)
     setOptionOne((prevValue) => false)
     setOptionThree((prevValue) => false)
-
 }
+
 function selectOptionThree() {
     setOptionThree((prevValue) => !prevValue)
     setOptionOne((prevValue) => false)
     setOptionTwo((prevValue) => false)
-
 }
 
 const formSchema = yup.object().shape({
@@ -55,12 +52,15 @@ const formSchema = yup.object().shape({
         .required("Camper's name is required"),
         age: yup.string()
         .required("Age is required"),
+        hometown: yup.string()
+        .required("Hometown is required"),
   })
   const formik = useFormik({
     enableReinitialize: true, 
       initialValues: {
         name:'',
         age:'',
+        hometown: '',
       },
       validationSchema: formSchema,
     })
@@ -97,17 +97,13 @@ const formSchema = yup.object().shape({
               formik.resetForm();
               toast("Your Camper Card Has Been Submitted!");
             })
-          
         }
       
-
-
 
   return (
     <>
     <ToastContainer/>
     <div className='ui container'>
-        Welcome to Camp ....!
         { !imageUrl &&
             <div className="ui middle aligned center aligned grid" style={{minHeight:"100vh"}}>
                 <div className="column">
@@ -190,6 +186,11 @@ const formSchema = yup.object().shape({
                                     onChange={formik.handleChange}
                                     value={formik.values.age}>
                                     <option value="">--</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
                                     <option value="8">8</option>
                                     <option value="9">9</option>
                                     <option value="10">10</option>
@@ -199,6 +200,11 @@ const formSchema = yup.object().shape({
                                 </select>              
                                 {formik.errors && <p style={{color:'red', textAlign:'center'}}>{formik.errors.age}</p>}
                             </div>
+                        </div>
+                        <div className='field'>
+                            <label>Hometown</label>
+                            <input type="text" name="hometown" value={formik.values.hometown} placeholder="Hometown..." onChange={formik.handleChange}></input>
+                            {formik.errors && <p style={{color:'red', textAlign:'center'}}>{formik.errors.hometown}</p>}
                         </div>
                     </form> 
         </div>
